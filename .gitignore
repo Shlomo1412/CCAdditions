@@ -1,0 +1,50 @@
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# VS Code
+.vscode/
+
+# Gradle
+.gradle/
+build/
+!src/**/build/
+
+# Minecraft
+run/
+runs/
+logs/
+
+# Mac OS
+.DS_Store
+
+# Java
+*.class
+*.jar
+*.war
+
+# Forge/Minecraft specific
+*.log
+*.log.gz
+logs/
+crash-reports/
+
+# Generated resources (keep src/generated tracked if needed)
+# Uncomment the line below if you don't want to track generated resources
+# src/generated/
+
+# Local development
+local.properties
+*.local
+
+# Secrets
+secrets.json
