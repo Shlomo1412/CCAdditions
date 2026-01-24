@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "DND",
+        "NSN",
+        "DND"
+    ],
+    "key": {
+        "S": { "item": "cc_additions:scanner" },
+        "N": { "item": "minecraft:nether_star" },
+        "D": { "item": "minecraft:diamond" }
+    },
+    "result": {
+        "item": "cc_additions:scanner_advanced",
+        "count": 1
+    }
+}

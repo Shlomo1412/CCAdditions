@@ -11,9 +11,12 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.shlomo1412.cc_additions.block.ModBlocks;
 import net.shlomo1412.cc_additions.block.entity.ModBlockEntities;
 import net.shlomo1412.cc_additions.block.entity.ScannerBlockEntity;
+import net.shlomo1412.cc_additions.block.entity.ScannerAdvancedBlockEntity;
+import net.shlomo1412.cc_additions.item.ModCreativeTab;
 import net.shlomo1412.cc_additions.item.ModItems;
 import net.shlomo1412.cc_additions.peripheral.PeripheralProvider;
 import net.shlomo1412.cc_additions.peripheral.ScannerPeripheral;
+import net.shlomo1412.cc_additions.peripheral.ScannerAdvancedPeripheral;
 import org.slf4j.Logger;
 
 @Mod(Cc_additions.MODID)
@@ -28,6 +31,7 @@ public class Cc_additions {
         ModBlocks.register(modEventBus);
         ModItems.register(modEventBus);
         ModBlockEntities.register(modEventBus);
+        ModCreativeTab.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
@@ -40,7 +44,7 @@ public class Cc_additions {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        LOGGER.info("CC Additions initialized - Scanner peripheral ready!");
+        LOGGER.info("CC Additions initialized - Scanner peripherals ready!");
     }
 
     /**
@@ -49,6 +53,8 @@ public class Cc_additions {
     public static void attachPeripherals(AttachCapabilitiesEvent<BlockEntity> event) {
         if (event.getObject() instanceof ScannerBlockEntity scanner) {
             PeripheralProvider.attach(event, scanner, ScannerPeripheral::new);
+        } else if (event.getObject() instanceof ScannerAdvancedBlockEntity advScanner) {
+            PeripheralProvider.attach(event, advScanner, ScannerAdvancedPeripheral::new);
         }
     }
 }

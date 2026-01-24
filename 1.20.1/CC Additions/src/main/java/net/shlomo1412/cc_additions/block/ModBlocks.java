@@ -24,6 +24,12 @@ public class ModBlocks {
             .strength(2.0f, 6.0f)
             .requiresCorrectToolForDrops()));
 
+    public static final RegistryObject<Block> SCANNER_ADVANCED = registerBlock("scanner_advanced",
+        () -> new ScannerAdvancedBlock(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.COLOR_PURPLE)
+            .strength(3.0f, 8.0f)
+            .requiresCorrectToolForDrops()));
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> registeredBlock = BLOCKS.register(name, block);
         registerBlockItem(name, registeredBlock);

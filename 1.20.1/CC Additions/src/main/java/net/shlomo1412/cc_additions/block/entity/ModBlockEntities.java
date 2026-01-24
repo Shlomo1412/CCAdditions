@@ -16,6 +16,10 @@ public class ModBlockEntities {
         BLOCK_ENTITIES.register("scanner", () ->
             BlockEntityType.Builder.of(ScannerBlockEntity::new, ModBlocks.SCANNER.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<ScannerAdvancedBlockEntity>> SCANNER_ADVANCED =
+        BLOCK_ENTITIES.register("scanner_advanced", () ->
+            BlockEntityType.Builder.of(ScannerAdvancedBlockEntity::new, ModBlocks.SCANNER_ADVANCED.get()).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

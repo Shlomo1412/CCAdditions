@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "cc_additions:block/scanner_advanced" },
+        "facing=south": { "model": "cc_additions:block/scanner_advanced", "y": 180 },
+        "facing=west": { "model": "cc_additions:block/scanner_advanced", "y": 270 },
+        "facing=east": { "model": "cc_additions:block/scanner_advanced", "y": 90 }
+    }
+}
