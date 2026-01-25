@@ -20,6 +20,12 @@ public class ModBlockEntities {
         BLOCK_ENTITIES.register("scanner_advanced", () ->
             BlockEntityType.Builder.of(ScannerAdvancedBlockEntity::new, ModBlocks.SCANNER_ADVANCED.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<RemoteTerminalWallBlockEntity>> REMOTE_TERMINAL_WALL =
+        BLOCK_ENTITIES.register("remote_terminal_wall", () ->
+            BlockEntityType.Builder.of(RemoteTerminalWallBlockEntity::new, 
+                ModBlocks.REMOTE_TERMINAL_WALL.get(), 
+                ModBlocks.ADVANCED_REMOTE_TERMINAL_WALL.get()).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

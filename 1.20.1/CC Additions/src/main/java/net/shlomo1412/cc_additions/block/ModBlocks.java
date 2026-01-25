@@ -30,6 +30,19 @@ public class ModBlocks {
             .strength(3.0f, 8.0f)
             .requiresCorrectToolForDrops()));
 
+    // Wall-mounted remote terminals (no block items - placed by remote terminal items)
+    public static final RegistryObject<Block> REMOTE_TERMINAL_WALL = BLOCKS.register("remote_terminal_wall",
+        () -> new RemoteTerminalWallBlock(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.METAL)
+            .strength(0.5f)
+            .noOcclusion(), false));
+
+    public static final RegistryObject<Block> ADVANCED_REMOTE_TERMINAL_WALL = BLOCKS.register("advanced_remote_terminal_wall",
+        () -> new RemoteTerminalWallBlock(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.COLOR_PURPLE)
+            .strength(0.5f)
+            .noOcclusion(), true));
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> registeredBlock = BLOCKS.register(name, block);
         registerBlockItem(name, registeredBlock);

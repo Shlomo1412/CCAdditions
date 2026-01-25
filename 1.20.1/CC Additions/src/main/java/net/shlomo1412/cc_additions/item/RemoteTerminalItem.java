@@ -7,9 +7,9 @@ import dan200.computercraft.shared.computer.inventory.ComputerMenuWithoutInvento
 import dan200.computercraft.shared.network.container.ComputerContainerData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -27,8 +27,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.NetworkHooks;
+import net.shlomo1412.cc_additions.block.ModBlocks;
+import net.shlomo1412.cc_additions.block.RemoteTerminalWallBlock;
+import net.shlomo1412.cc_additions.block.entity.RemoteTerminalWallBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -146,10 +151,11 @@ public class RemoteTerminalItem extends Item {
         BlockPos pos = context.getClickedPos();
         Player player = context.getPlayer();
         ItemStack stack = context.getItemInHand();
+        Direction clickedFace = context.getClickedFace();
 
         if (player == null) return InteractionResult.PASS;
 
-        // Check if clicked on a computer
+        // Check if clicked on a computer - pair to it
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof AbstractComputerBlockEntity computer) {
             if (!level.isClientSide) {
@@ -167,7 +173,45 @@ public class RemoteTerminalItem extends Item {
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
+        // Check if clicked on a horizontal face (wall) - place on wall
+        if (clickedFace.getAxis().isHorizontal()) {
+            BlockPos placePos = pos.relative(clickedFace);
+            
+            // Check if the position is valid for placement
+            if (level.getBlockState(placePos).canBeReplaced()) {
+                Block wallBlock = getWallBlock();
+                BlockState wallState = wallBlock.defaultBlockState()
+                    .setValue(RemoteTerminalWallBlock.FACING, clickedFace);
+                
+                // Check if it can survive on this wall
+                if (wallState.canSurvive(level, placePos)) {
+                    if (!level.isClientSide) {
+                        level.setBlock(placePos, wallState, 3);
+                        
+                        // Transfer NBT data to the block entity
+                        BlockEntity placedBE = level.getBlockEntity(placePos);
+                        if (placedBE instanceof RemoteTerminalWallBlockEntity wallTerminal) {
+                            wallTerminal.loadFromItem(stack);
+                        }
+                        
+                        // Consume the item if not in creative
+                        if (!player.getAbilities().instabuild) {
+                            stack.shrink(1);
+                        }
+                    }
+                    return InteractionResult.sidedSuccess(level.isClientSide);
+                }
+            }
+        }
+
         return InteractionResult.PASS;
+    }
+
+    /**
+     * Get the wall block to place. Override in subclass for advanced version.
+     */
+    protected Block getWallBlock() {
+        return ModBlocks.REMOTE_TERMINAL_WALL.get();
     }
 
     @Override
@@ -357,6 +401,9 @@ public class RemoteTerminalItem extends Item {
         }
 
         tooltip.add(Component.translatable("tooltip.cc_additions.remote_shift_unpair")
+            .withStyle(ChatFormatting.DARK_GRAY));
+        
+        tooltip.add(Component.translatable("tooltip.cc_additions.remote_hang_on_wall")
             .withStyle(ChatFormatting.DARK_GRAY));
     }
 

@@ -1,6 +1,8 @@
 {
     "block.cc_additions.scanner": "Scanner",
     "block.cc_additions.scanner_advanced": "Advanced Scanner",
+    "block.cc_additions.remote_terminal_wall": "Remote Terminal",
+    "block.cc_additions.advanced_remote_terminal_wall": "Advanced Remote Terminal",
     "item.cc_additions.remote_terminal": "Remote Terminal",
     "item.cc_additions.advanced_remote_terminal": "Advanced Remote Terminal",
     "itemGroup.cc_additions": "CC Additions",
@@ -23,5 +25,6 @@
     "tooltip.cc_additions.remote_view_only": "View Only",
     "tooltip.cc_additions.remote_not_paired": "Not paired",
     "tooltip.cc_additions.remote_shift_unpair": "Shift + Right-click to unpair",
+    "tooltip.cc_additions.remote_hang_on_wall": "Right-click on a wall to hang",
     "tooltip.cc_additions.advanced_remote_coming_soon": "§7Currently no difference from the basic one (Coming Soon!)"
 }
