@@ -1,11 +1,11 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "cc_additions:item/remote_terminal_back",
-		"1": "cc_additions:item/remote_terminal_front",
-		"2": "cc_additions:item/remote_terminal_side",
+		"0": "cc_additions:item/advanced_remote_terminal_back",
+		"1": "cc_additions:item/advanced_remote_terminal_front",
+		"2": "cc_additions:item/advanced_remote_terminal_side",
 		"3": "cc_additions:item/antena",
-		"particle": "cc_additions:item/remote_terminal_back"
+		"particle": "cc_additions:item/advanced_remote_terminal_back"
 	},
 	"elements": [
 		{

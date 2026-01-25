@@ -1,14 +1,14 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        "DND",
-        "NSN",
-        "DND"
+        "GGG",
+        "GSG",
+        "GBG"
     ],
     "key": {
+        "G": { "item": "minecraft:gold_ingot" },
         "S": { "item": "cc_additions:scanner" },
-        "N": { "item": "minecraft:nether_star" },
-        "D": { "item": "minecraft:diamond" }
+        "B": { "item": "minecraft:gold_block" }
     },
     "result": {
         "item": "cc_additions:scanner_advanced",

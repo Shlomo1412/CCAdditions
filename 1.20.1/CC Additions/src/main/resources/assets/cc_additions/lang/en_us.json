@@ -1,5 +1,27 @@
 {
     "block.cc_additions.scanner": "Scanner",
     "block.cc_additions.scanner_advanced": "Advanced Scanner",
-    "itemGroup.cc_additions": "CC Additions"
+    "item.cc_additions.remote_terminal": "Remote Terminal",
+    "item.cc_additions.advanced_remote_terminal": "Advanced Remote Terminal",
+    "itemGroup.cc_additions": "CC Additions",
+    
+    "gui.cc_additions.remote_terminal": "Remote Terminal (View Only)",
+    "gui.cc_additions.advanced_remote_terminal": "Advanced Remote Terminal",
+    
+    "message.cc_additions.remote_paired": "Paired to %s",
+    "message.cc_additions.remote_unpaired": "Remote terminal unpaired",
+    "message.cc_additions.remote_not_paired": "Not paired to any computer",
+    "message.cc_additions.remote_invalid": "Invalid pairing data",
+    "message.cc_additions.remote_dimension_unloaded": "Target dimension is not loaded",
+    "message.cc_additions.remote_not_loaded": "Target chunk is not loaded",
+    "message.cc_additions.remote_computer_missing": "Computer no longer exists at this location",
+    "message.cc_additions.remote_computer_error": "Failed to access computer",
+    
+    "tooltip.cc_additions.remote_paired_to": "Paired to: %s",
+    "tooltip.cc_additions.remote_position": "Position: %d, %d, %d",
+    "tooltip.cc_additions.remote_dimension": "Dimension: %s",
+    "tooltip.cc_additions.remote_view_only": "View Only",
+    "tooltip.cc_additions.remote_not_paired": "Not paired",
+    "tooltip.cc_additions.remote_shift_unpair": "Shift + Right-click to unpair",
+    "tooltip.cc_additions.advanced_remote_coming_soon": "§7Currently no difference from the basic one (Coming Soon!)"
 }

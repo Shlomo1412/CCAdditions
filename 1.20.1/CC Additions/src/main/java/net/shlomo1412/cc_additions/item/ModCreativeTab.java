@@ -21,6 +21,8 @@ public class ModCreativeTab {
             .displayItems((parameters, output) -> {
                 output.accept(ModBlocks.SCANNER.get());
                 output.accept(ModBlocks.SCANNER_ADVANCED.get());
+                output.accept(ModItems.REMOTE_TERMINAL.get());
+                output.accept(ModItems.ADVANCED_REMOTE_TERMINAL.get());
             })
             .build());
 
