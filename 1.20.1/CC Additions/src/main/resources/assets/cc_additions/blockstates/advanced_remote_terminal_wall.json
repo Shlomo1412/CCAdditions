@@ -3,6 +3,8 @@
         "facing=north": { "model": "cc_additions:block/advanced_remote_terminal_wall" },
         "facing=south": { "model": "cc_additions:block/advanced_remote_terminal_wall", "y": 180 },
         "facing=east": { "model": "cc_additions:block/advanced_remote_terminal_wall", "y": 90 },
-        "facing=west": { "model": "cc_additions:block/advanced_remote_terminal_wall", "y": 270 }
+        "facing=west": { "model": "cc_additions:block/advanced_remote_terminal_wall", "y": 270 },
+        "facing=up": { "model": "cc_additions:block/advanced_remote_terminal_floor" },
+        "facing=down": { "model": "cc_additions:block/advanced_remote_terminal_ceiling" }
     }
 }

@@ -14,10 +14,10 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -32,18 +32,22 @@ import java.util.List;
 
 /**
  * Wall-mounted Remote Terminal block.
+ * Can be placed on walls, floor, or ceiling.
  * Right-click to open the paired computer's terminal.
  * Shift+Right-click to remove and get the item back.
  */
 public class RemoteTerminalWallBlock extends Block implements EntityBlock {
 
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
     // Shapes for each facing direction (thin like an item frame)
-    protected static final VoxelShape NORTH_SHAPE = Block.box(2, 1, 14, 14, 13, 16);
-    protected static final VoxelShape SOUTH_SHAPE = Block.box(2, 1, 0, 14, 13, 2);
-    protected static final VoxelShape EAST_SHAPE = Block.box(0, 1, 2, 2, 13, 14);
-    protected static final VoxelShape WEST_SHAPE = Block.box(14, 1, 2, 16, 13, 14);
+    // The facing direction is the direction the screen points (opposite of attachment surface)
+    protected static final VoxelShape NORTH_SHAPE = Block.box(2, 2, 14, 14, 14, 16);  // Attached to south wall
+    protected static final VoxelShape SOUTH_SHAPE = Block.box(2, 2, 0, 14, 14, 2);    // Attached to north wall
+    protected static final VoxelShape EAST_SHAPE = Block.box(0, 2, 2, 2, 14, 14);     // Attached to west wall
+    protected static final VoxelShape WEST_SHAPE = Block.box(14, 2, 2, 16, 14, 14);   // Attached to east wall
+    protected static final VoxelShape UP_SHAPE = Block.box(2, 0, 2, 14, 2, 14);       // Attached to floor (facing up)
+    protected static final VoxelShape DOWN_SHAPE = Block.box(2, 14, 2, 14, 16, 14);   // Attached to ceiling (facing down)
 
     private final boolean advanced;
 
@@ -68,6 +72,8 @@ public class RemoteTerminalWallBlock extends Block implements EntityBlock {
             case SOUTH -> SOUTH_SHAPE;
             case EAST -> EAST_SHAPE;
             case WEST -> WEST_SHAPE;
+            case UP -> UP_SHAPE;
+            case DOWN -> DOWN_SHAPE;
             default -> NORTH_SHAPE;
         };
     }
@@ -75,19 +81,16 @@ public class RemoteTerminalWallBlock extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        // The block is placed on a wall, so we need to determine which wall
+        // The block faces the direction of the clicked face (screen points away from surface)
         Direction clickedFace = context.getClickedFace();
-        if (clickedFace.getAxis().isHorizontal()) {
-            return this.defaultBlockState().setValue(FACING, clickedFace);
-        }
-        return null; // Can't place on top/bottom
+        return this.defaultBlockState().setValue(FACING, clickedFace);
     }
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         Direction facing = state.getValue(FACING);
-        BlockPos wallPos = pos.relative(facing.getOpposite());
-        return level.getBlockState(wallPos).isFaceSturdy(level, wallPos, facing);
+        BlockPos attachPos = pos.relative(facing.getOpposite());
+        return level.getBlockState(attachPos).isFaceSturdy(level, attachPos, facing);
     }
 
     @Override

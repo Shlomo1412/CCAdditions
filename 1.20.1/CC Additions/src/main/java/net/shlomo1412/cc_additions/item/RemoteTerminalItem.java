@@ -173,34 +173,32 @@ public class RemoteTerminalItem extends Item {
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
-        // Check if clicked on a horizontal face (wall) - place on wall
-        if (clickedFace.getAxis().isHorizontal()) {
-            BlockPos placePos = pos.relative(clickedFace);
+        // Try to place on any surface (wall, floor, or ceiling)
+        BlockPos placePos = pos.relative(clickedFace);
+        
+        // Check if the position is valid for placement
+        if (level.getBlockState(placePos).canBeReplaced()) {
+            Block wallBlock = getWallBlock();
+            BlockState wallState = wallBlock.defaultBlockState()
+                .setValue(RemoteTerminalWallBlock.FACING, clickedFace);
             
-            // Check if the position is valid for placement
-            if (level.getBlockState(placePos).canBeReplaced()) {
-                Block wallBlock = getWallBlock();
-                BlockState wallState = wallBlock.defaultBlockState()
-                    .setValue(RemoteTerminalWallBlock.FACING, clickedFace);
-                
-                // Check if it can survive on this wall
-                if (wallState.canSurvive(level, placePos)) {
-                    if (!level.isClientSide) {
-                        level.setBlock(placePos, wallState, 3);
-                        
-                        // Transfer NBT data to the block entity
-                        BlockEntity placedBE = level.getBlockEntity(placePos);
-                        if (placedBE instanceof RemoteTerminalWallBlockEntity wallTerminal) {
-                            wallTerminal.loadFromItem(stack);
-                        }
-                        
-                        // Consume the item if not in creative
-                        if (!player.getAbilities().instabuild) {
-                            stack.shrink(1);
-                        }
+            // Check if it can survive on this surface
+            if (wallState.canSurvive(level, placePos)) {
+                if (!level.isClientSide) {
+                    level.setBlock(placePos, wallState, 3);
+                    
+                    // Transfer NBT data to the block entity
+                    BlockEntity placedBE = level.getBlockEntity(placePos);
+                    if (placedBE instanceof RemoteTerminalWallBlockEntity wallTerminal) {
+                        wallTerminal.loadFromItem(stack);
                     }
-                    return InteractionResult.sidedSuccess(level.isClientSide);
+                    
+                    // Consume the item if not in creative
+                    if (!player.getAbilities().instabuild) {
+                        stack.shrink(1);
+                    }
                 }
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
         }
 
