@@ -16,13 +16,14 @@ public class ModCreativeTab {
 
     public static final RegistryObject<CreativeModeTab> CC_ADDITIONS_TAB = CREATIVE_MODE_TABS.register("cc_additions_tab",
         () -> CreativeModeTab.builder()
-            .icon(() -> new ItemStack(ModBlocks.SCANNER_ADVANCED.get()))
+            .icon(() -> new ItemStack(ModItems.ADVANCED_REMOTE_TERMINAL.get()))
             .title(Component.translatable("itemGroup.cc_additions"))
             .displayItems((parameters, output) -> {
                 output.accept(ModBlocks.SCANNER.get());
                 output.accept(ModBlocks.SCANNER_ADVANCED.get());
                 output.accept(ModItems.REMOTE_TERMINAL.get());
                 output.accept(ModItems.ADVANCED_REMOTE_TERMINAL.get());
+                output.accept(ModBlocks.PLAYER_CONNECTOR.get());
             })
             .build());
 

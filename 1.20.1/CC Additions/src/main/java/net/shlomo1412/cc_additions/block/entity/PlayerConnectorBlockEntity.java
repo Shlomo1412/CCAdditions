@@ -27,11 +27,13 @@ public class PlayerConnectorBlockEntity extends BlockEntity implements MenuProvi
 
     private static final String TAG_PAIRED_UUID = "PairedPlayerUUID";
     private static final String TAG_PAIRED_NAME = "PairedPlayerName";
+    private static final String TAG_IS_ONLINE = "IsOnline";
 
     @Nullable
     private UUID pairedPlayerUUID = null;
     @Nullable
     private String pairedPlayerName = null;
+    private boolean cachedOnlineStatus = false;
 
     public PlayerConnectorBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.PLAYER_CONNECTOR.get(), pos, state);
@@ -78,7 +80,24 @@ public class PlayerConnectorBlockEntity extends BlockEntity implements MenuProvi
      * Check if the paired player is currently online.
      */
     public boolean isPairedPlayerOnline() {
+        if (level != null && level.isClientSide) {
+            return cachedOnlineStatus;
+        }
         return getPairedPlayer() != null;
+    }
+
+    /**
+     * Update the cached online status (call from server tick).
+     */
+    public void updateOnlineStatus() {
+        if (level != null && !level.isClientSide && pairedPlayerUUID != null) {
+            boolean newStatus = getPairedPlayer() != null;
+            if (newStatus != cachedOnlineStatus) {
+                cachedOnlineStatus = newStatus;
+                setChanged();
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            }
+        }
     }
 
     /**
@@ -121,6 +140,7 @@ public class PlayerConnectorBlockEntity extends BlockEntity implements MenuProvi
         if (pairedPlayerName != null) {
             tag.putString(TAG_PAIRED_NAME, pairedPlayerName);
         }
+        tag.putBoolean(TAG_IS_ONLINE, cachedOnlineStatus);
     }
 
     @Override
@@ -136,6 +156,7 @@ public class PlayerConnectorBlockEntity extends BlockEntity implements MenuProvi
         } else {
             this.pairedPlayerName = null;
         }
+        this.cachedOnlineStatus = tag.getBoolean(TAG_IS_ONLINE);
     }
 
     @Override

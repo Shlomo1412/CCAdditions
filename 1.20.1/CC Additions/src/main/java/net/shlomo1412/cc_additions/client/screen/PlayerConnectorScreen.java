@@ -133,6 +133,6 @@ public class PlayerConnectorScreen extends AbstractContainerScreen<PlayerConnect
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        guiGraphics.drawCenteredString(this.font, this.title, this.imageWidth / 2, this.titleLabelY, 0x404040);
+        guiGraphics.drawCenteredString(this.font, this.title, this.imageWidth / 2, this.titleLabelY, 0xFFFFFF);
     }
 }
