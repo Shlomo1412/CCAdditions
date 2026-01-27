@@ -26,6 +26,11 @@ public class ModBlockEntities {
                 ModBlocks.REMOTE_TERMINAL_WALL.get(), 
                 ModBlocks.ADVANCED_REMOTE_TERMINAL_WALL.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<PlayerConnectorBlockEntity>> PLAYER_CONNECTOR =
+        BLOCK_ENTITIES.register("player_connector", () ->
+            BlockEntityType.Builder.of(PlayerConnectorBlockEntity::new, 
+                ModBlocks.PLAYER_CONNECTOR.get()).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

@@ -12,11 +12,15 @@ import net.shlomo1412.cc_additions.block.ModBlocks;
 import net.shlomo1412.cc_additions.block.entity.ModBlockEntities;
 import net.shlomo1412.cc_additions.block.entity.ScannerBlockEntity;
 import net.shlomo1412.cc_additions.block.entity.ScannerAdvancedBlockEntity;
+import net.shlomo1412.cc_additions.block.entity.PlayerConnectorBlockEntity;
 import net.shlomo1412.cc_additions.item.ModCreativeTab;
 import net.shlomo1412.cc_additions.item.ModItems;
+import net.shlomo1412.cc_additions.menu.ModMenuTypes;
+import net.shlomo1412.cc_additions.network.ModNetwork;
 import net.shlomo1412.cc_additions.peripheral.PeripheralProvider;
 import net.shlomo1412.cc_additions.peripheral.ScannerPeripheral;
 import net.shlomo1412.cc_additions.peripheral.ScannerAdvancedPeripheral;
+import net.shlomo1412.cc_additions.peripheral.PlayerConnectorPeripheral;
 import org.slf4j.Logger;
 
 @Mod(Cc_additions.MODID)
@@ -32,6 +36,7 @@ public class Cc_additions {
         ModItems.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModCreativeTab.register(modEventBus);
+        ModMenuTypes.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
@@ -45,6 +50,7 @@ public class Cc_additions {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         LOGGER.info("CC Additions initialized - Scanner peripherals ready!");
+        ModNetwork.register();
     }
 
     /**
@@ -55,6 +61,8 @@ public class Cc_additions {
             PeripheralProvider.attach(event, scanner, ScannerPeripheral::new);
         } else if (event.getObject() instanceof ScannerAdvancedBlockEntity advScanner) {
             PeripheralProvider.attach(event, advScanner, ScannerAdvancedPeripheral::new);
+        } else if (event.getObject() instanceof PlayerConnectorBlockEntity connector) {
+            PeripheralProvider.attach(event, connector, PlayerConnectorPeripheral::new);
         }
     }
 }

@@ -26,5 +26,16 @@
     "tooltip.cc_additions.remote_not_paired": "Not paired",
     "tooltip.cc_additions.remote_shift_unpair": "Shift + Right-click to unpair",
     "tooltip.cc_additions.remote_hang_on_wall": "Right-click on a wall to hang",
-    "tooltip.cc_additions.advanced_remote_coming_soon": "§7Currently no difference from the basic one (Coming Soon!)"
+    "tooltip.cc_additions.advanced_remote_coming_soon": "§7Currently no difference from the basic one (Coming Soon!)",
+    
+    "block.cc_additions.player_connector": "Player Connector",
+    "gui.cc_additions.player_connector": "Player Connector",
+    "gui.cc_additions.player_connector.pair": "Pair to Me",
+    "gui.cc_additions.player_connector.unpair": "Unpair",
+    "gui.cc_additions.player_connector.paired_to": "Paired to: %s",
+    "gui.cc_additions.player_connector.online": "Online",
+    "gui.cc_additions.player_connector.offline": "Offline",
+    "gui.cc_additions.player_connector.not_paired": "Not paired to any player",
+    "gui.cc_additions.player_connector.click_pair": "Click the button below to pair",
+    "gui.cc_additions.player_connector.not_yours": "This connector is paired to another player"
 }
