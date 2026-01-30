@@ -37,5 +37,7 @@
     "gui.cc_additions.player_connector.offline": "Offline",
     "gui.cc_additions.player_connector.not_paired": "Not paired to any player",
     "gui.cc_additions.player_connector.click_pair": "Click the button below to pair",
-    "gui.cc_additions.player_connector.not_yours": "This connector is paired to another player"
+    "gui.cc_additions.player_connector.not_yours": "This connector is paired to another player",
+    
+    "block.cc_additions.fingerprint_reader": "Fingerprint Reader"
 }

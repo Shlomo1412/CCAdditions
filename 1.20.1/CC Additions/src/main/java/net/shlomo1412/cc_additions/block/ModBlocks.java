@@ -50,6 +50,13 @@ public class ModBlocks {
             .requiresCorrectToolForDrops()
             .noOcclusion()));
 
+    public static final RegistryObject<Block> FINGERPRINT_READER = registerBlock("fingerprint_reader",
+        () -> new FingerprintReaderBlock(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.METAL)
+            .strength(2.0f, 6.0f)
+            .requiresCorrectToolForDrops()
+            .noOcclusion()));
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> registeredBlock = BLOCKS.register(name, block);
         registerBlockItem(name, registeredBlock);

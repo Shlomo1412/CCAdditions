@@ -31,6 +31,11 @@ public class ModBlockEntities {
             BlockEntityType.Builder.of(PlayerConnectorBlockEntity::new, 
                 ModBlocks.PLAYER_CONNECTOR.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<FingerprintReaderBlockEntity>> FINGERPRINT_READER =
+        BLOCK_ENTITIES.register("fingerprint_reader", () ->
+            BlockEntityType.Builder.of(FingerprintReaderBlockEntity::new, 
+                ModBlocks.FINGERPRINT_READER.get()).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }
