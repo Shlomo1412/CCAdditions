@@ -57,6 +57,12 @@ public class ModBlocks {
             .requiresCorrectToolForDrops()
             .noOcclusion()));
 
+    public static final RegistryObject<Block> COMPUTERIZED_TNT = registerBlock("computerized_tnt",
+        () -> new ComputerizedTntBlock(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.FIRE)
+            .strength(0.0f)
+            .sound(net.minecraft.world.level.block.SoundType.GRASS)));
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> registeredBlock = BLOCKS.register(name, block);
         registerBlockItem(name, registeredBlock);

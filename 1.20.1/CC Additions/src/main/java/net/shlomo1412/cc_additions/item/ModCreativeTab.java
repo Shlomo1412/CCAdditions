@@ -25,6 +25,7 @@ public class ModCreativeTab {
                 output.accept(ModItems.ADVANCED_REMOTE_TERMINAL.get());
                 output.accept(ModBlocks.PLAYER_CONNECTOR.get());
                 output.accept(ModBlocks.FINGERPRINT_READER.get());
+                output.accept(ModBlocks.COMPUTERIZED_TNT.get());
             })
             .build());
 

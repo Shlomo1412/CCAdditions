@@ -1,19 +1,19 @@
 {
   "variants": {
     "facing=north": {
-      "model": "cc_additions:block/fingerprint_reader"
-    },
-    "facing=south": {
       "model": "cc_additions:block/fingerprint_reader",
       "y": 180
     },
+    "facing=south": {
+      "model": "cc_additions:block/fingerprint_reader"
+    },
     "facing=west": {
       "model": "cc_additions:block/fingerprint_reader",
-      "y": 270
+      "y": 90
     },
     "facing=east": {
       "model": "cc_additions:block/fingerprint_reader",
-      "y": 90
+      "y": 270
     }
   }
 }

@@ -38,10 +38,11 @@ public class PlayerConnectorBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     // Shapes for each facing direction (thin wall-mounted block)
-    protected static final VoxelShape NORTH_SHAPE = Block.box(5, 4, 15, 11, 13, 16);
-    protected static final VoxelShape SOUTH_SHAPE = Block.box(5, 4, 0, 11, 13, 1);
-    protected static final VoxelShape EAST_SHAPE = Block.box(0, 4, 5, 1, 13, 11);
-    protected static final VoxelShape WEST_SHAPE = Block.box(15, 4, 5, 16, 13, 11);
+    // Model is at Z=0-1 (north side of block), X from 4-12, Y from 3-14
+    protected static final VoxelShape SOUTH_SHAPE = Block.box(4, 3, 15, 12, 14, 16);
+    protected static final VoxelShape NORTH_SHAPE = Block.box(4, 3, 0, 12, 14, 1);
+    protected static final VoxelShape WEST_SHAPE = Block.box(0, 3, 4, 1, 14, 12);
+    protected static final VoxelShape EAST_SHAPE = Block.box(15, 3, 4, 16, 14, 12);
 
     public PlayerConnectorBlock(Properties properties) {
         super(properties);
@@ -68,6 +69,7 @@ public class PlayerConnectorBlock extends Block implements EntityBlock {
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         Direction clickedFace = context.getClickedFace();
         if (clickedFace.getAxis().isHorizontal()) {
+            // Block attaches to wall behind it, front faces toward player (same as clicked face)
             return this.defaultBlockState().setValue(FACING, clickedFace);
         }
         // If clicking top/bottom, face toward player
@@ -77,6 +79,7 @@ public class PlayerConnectorBlock extends Block implements EntityBlock {
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         Direction facing = state.getValue(FACING);
+        // Wall is behind the block (opposite of facing direction)
         BlockPos wallPos = pos.relative(facing.getOpposite());
         return level.getBlockState(wallPos).isFaceSturdy(level, wallPos, facing);
     }
@@ -85,6 +88,7 @@ public class PlayerConnectorBlock extends Block implements EntityBlock {
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
                                    LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         Direction facing = state.getValue(FACING);
+        // Wall is opposite the facing direction
         if (direction == facing.getOpposite() && !this.canSurvive(state, level, pos)) {
             return Blocks.AIR.defaultBlockState();
         }

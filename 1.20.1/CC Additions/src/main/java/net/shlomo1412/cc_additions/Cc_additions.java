@@ -14,6 +14,7 @@ import net.shlomo1412.cc_additions.block.entity.ScannerBlockEntity;
 import net.shlomo1412.cc_additions.block.entity.ScannerAdvancedBlockEntity;
 import net.shlomo1412.cc_additions.block.entity.PlayerConnectorBlockEntity;
 import net.shlomo1412.cc_additions.block.entity.FingerprintReaderBlockEntity;
+import net.shlomo1412.cc_additions.block.entity.ComputerizedTntBlockEntity;
 import net.shlomo1412.cc_additions.item.ModCreativeTab;
 import net.shlomo1412.cc_additions.item.ModItems;
 import net.shlomo1412.cc_additions.menu.ModMenuTypes;
@@ -23,6 +24,7 @@ import net.shlomo1412.cc_additions.peripheral.ScannerPeripheral;
 import net.shlomo1412.cc_additions.peripheral.ScannerAdvancedPeripheral;
 import net.shlomo1412.cc_additions.peripheral.PlayerConnectorPeripheral;
 import net.shlomo1412.cc_additions.peripheral.FingerprintReaderPeripheral;
+import net.shlomo1412.cc_additions.peripheral.ComputerizedTntPeripheral;
 import org.slf4j.Logger;
 
 @Mod(Cc_additions.MODID)
@@ -67,6 +69,8 @@ public class Cc_additions {
             PeripheralProvider.attach(event, connector, PlayerConnectorPeripheral::new);
         } else if (event.getObject() instanceof FingerprintReaderBlockEntity reader) {
             PeripheralProvider.attach(event, reader, FingerprintReaderPeripheral::new);
+        } else if (event.getObject() instanceof ComputerizedTntBlockEntity tnt) {
+            PeripheralProvider.attach(event, tnt, ComputerizedTntPeripheral::new);
         }
     }
 }

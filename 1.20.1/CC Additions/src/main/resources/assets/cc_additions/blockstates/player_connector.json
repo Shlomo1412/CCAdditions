@@ -1,19 +1,19 @@
 {
   "variants": {
     "facing=north": {
-      "model": "cc_additions:block/player_connector"
-    },
-    "facing=south": {
       "model": "cc_additions:block/player_connector",
       "y": 180
     },
+    "facing=south": {
+      "model": "cc_additions:block/player_connector"
+    },
     "facing=west": {
       "model": "cc_additions:block/player_connector",
-      "y": 270
+      "y": 90
     },
     "facing=east": {
       "model": "cc_additions:block/player_connector",
-      "y": 90
+      "y": 270
     }
   }
 }

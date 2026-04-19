@@ -36,6 +36,11 @@ public class ModBlockEntities {
             BlockEntityType.Builder.of(FingerprintReaderBlockEntity::new, 
                 ModBlocks.FINGERPRINT_READER.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<ComputerizedTntBlockEntity>> COMPUTERIZED_TNT =
+        BLOCK_ENTITIES.register("computerized_tnt", () ->
+            BlockEntityType.Builder.of(ComputerizedTntBlockEntity::new,
+                ModBlocks.COMPUTERIZED_TNT.get()).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

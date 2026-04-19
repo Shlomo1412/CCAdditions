@@ -32,10 +32,11 @@ public class FingerprintReaderBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     // Shapes for each facing direction (12x12x1 wall-mounted block)
+    // When FACING=NORTH, the front faces north (away from south wall), so block is at Z=15-16
     protected static final VoxelShape NORTH_SHAPE = Block.box(2, 2, 15, 14, 14, 16);
     protected static final VoxelShape SOUTH_SHAPE = Block.box(2, 2, 0, 14, 14, 1);
-    protected static final VoxelShape EAST_SHAPE = Block.box(0, 2, 2, 1, 14, 14);
     protected static final VoxelShape WEST_SHAPE = Block.box(15, 2, 2, 16, 14, 14);
+    protected static final VoxelShape EAST_SHAPE = Block.box(0, 2, 2, 1, 14, 14);
 
     public FingerprintReaderBlock(Properties properties) {
         super(properties);
@@ -62,6 +63,7 @@ public class FingerprintReaderBlock extends Block implements EntityBlock {
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         Direction clickedFace = context.getClickedFace();
         if (clickedFace.getAxis().isHorizontal()) {
+            // Block attaches to wall behind it, front faces toward player (same as clicked face)
             return this.defaultBlockState().setValue(FACING, clickedFace);
         }
         return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
@@ -70,6 +72,7 @@ public class FingerprintReaderBlock extends Block implements EntityBlock {
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         Direction facing = state.getValue(FACING);
+        // Wall is behind the block (opposite of facing direction)
         BlockPos wallPos = pos.relative(facing.getOpposite());
         return level.getBlockState(wallPos).isFaceSturdy(level, wallPos, facing);
     }
@@ -78,6 +81,7 @@ public class FingerprintReaderBlock extends Block implements EntityBlock {
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
                                    LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         Direction facing = state.getValue(FACING);
+        // Wall is opposite the facing direction
         if (direction == facing.getOpposite() && !this.canSurvive(state, level, pos)) {
             return Blocks.AIR.defaultBlockState();
         }
