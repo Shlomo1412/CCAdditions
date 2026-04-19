@@ -40,5 +40,8 @@
     "gui.cc_additions.player_connector.not_yours": "This connector is paired to another player",
     
     "block.cc_additions.fingerprint_reader": "Fingerprint Reader",
-    "block.cc_additions.computerized_tnt": "Computerized TNT"
+    "block.cc_additions.computerized_tnt": "Computerized TNT",
+    
+    "block.cc_additions.ship_reader": "VS Ship Reader",
+    "block.cc_additions.ship_controller": "VS Ship Controller"
 }

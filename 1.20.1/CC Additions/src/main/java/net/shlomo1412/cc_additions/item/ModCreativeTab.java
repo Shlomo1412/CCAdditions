@@ -9,6 +9,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import net.shlomo1412.cc_additions.Cc_additions;
 import net.shlomo1412.cc_additions.block.ModBlocks;
+import net.shlomo1412.cc_additions.integration.VS2Integration;
 
 public class ModCreativeTab {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
@@ -26,6 +27,11 @@ public class ModCreativeTab {
                 output.accept(ModBlocks.PLAYER_CONNECTOR.get());
                 output.accept(ModBlocks.FINGERPRINT_READER.get());
                 output.accept(ModBlocks.COMPUTERIZED_TNT.get());
+                // VS2 blocks (only shown if VS2 is loaded)
+                if (VS2Integration.isLoaded()) {
+                    output.accept(ModBlocks.SHIP_READER.get());
+                    output.accept(ModBlocks.SHIP_CONTROLLER.get());
+                }
             })
             .build());
 

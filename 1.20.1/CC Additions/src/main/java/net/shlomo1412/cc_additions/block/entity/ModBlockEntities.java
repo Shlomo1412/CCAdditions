@@ -41,6 +41,17 @@ public class ModBlockEntities {
             BlockEntityType.Builder.of(ComputerizedTntBlockEntity::new,
                 ModBlocks.COMPUTERIZED_TNT.get()).build(null));
 
+    // VS2 Integration block entities
+    public static final RegistryObject<BlockEntityType<ShipReaderBlockEntity>> SHIP_READER =
+        BLOCK_ENTITIES.register("ship_reader", () ->
+            BlockEntityType.Builder.of(ShipReaderBlockEntity::new,
+                ModBlocks.SHIP_READER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<ShipControllerBlockEntity>> SHIP_CONTROLLER =
+        BLOCK_ENTITIES.register("ship_controller", () ->
+            BlockEntityType.Builder.of(ShipControllerBlockEntity::new,
+                ModBlocks.SHIP_CONTROLLER.get()).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

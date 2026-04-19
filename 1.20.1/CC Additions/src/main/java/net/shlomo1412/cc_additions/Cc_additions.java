@@ -15,6 +15,8 @@ import net.shlomo1412.cc_additions.block.entity.ScannerAdvancedBlockEntity;
 import net.shlomo1412.cc_additions.block.entity.PlayerConnectorBlockEntity;
 import net.shlomo1412.cc_additions.block.entity.FingerprintReaderBlockEntity;
 import net.shlomo1412.cc_additions.block.entity.ComputerizedTntBlockEntity;
+import net.shlomo1412.cc_additions.block.entity.ShipReaderBlockEntity;
+import net.shlomo1412.cc_additions.block.entity.ShipControllerBlockEntity;
 import net.shlomo1412.cc_additions.item.ModCreativeTab;
 import net.shlomo1412.cc_additions.item.ModItems;
 import net.shlomo1412.cc_additions.menu.ModMenuTypes;
@@ -25,6 +27,9 @@ import net.shlomo1412.cc_additions.peripheral.ScannerAdvancedPeripheral;
 import net.shlomo1412.cc_additions.peripheral.PlayerConnectorPeripheral;
 import net.shlomo1412.cc_additions.peripheral.FingerprintReaderPeripheral;
 import net.shlomo1412.cc_additions.peripheral.ComputerizedTntPeripheral;
+import net.shlomo1412.cc_additions.peripheral.ShipReaderPeripheral;
+import net.shlomo1412.cc_additions.peripheral.ShipControllerPeripheral;
+import net.shlomo1412.cc_additions.integration.VS2Integration;
 import org.slf4j.Logger;
 
 @Mod(Cc_additions.MODID)
@@ -71,6 +76,21 @@ public class Cc_additions {
             PeripheralProvider.attach(event, reader, FingerprintReaderPeripheral::new);
         } else if (event.getObject() instanceof ComputerizedTntBlockEntity tnt) {
             PeripheralProvider.attach(event, tnt, ComputerizedTntPeripheral::new);
+        } else if (VS2Integration.isLoaded()) {
+            // VS2 peripherals - only attach if VS2 is loaded
+            attachVS2Peripherals(event);
+        }
+    }
+
+    /**
+     * Attach VS2 peripheral capabilities. This is in a separate method to avoid
+     * loading VS2 classes when VS2 is not present.
+     */
+    private static void attachVS2Peripherals(AttachCapabilitiesEvent<BlockEntity> event) {
+        if (event.getObject() instanceof ShipReaderBlockEntity reader) {
+            PeripheralProvider.attach(event, reader, ShipReaderPeripheral::new);
+        } else if (event.getObject() instanceof ShipControllerBlockEntity controller) {
+            PeripheralProvider.attach(event, controller, ShipControllerPeripheral::new);
         }
     }
 }

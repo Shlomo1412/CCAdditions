@@ -63,6 +63,21 @@ public class ModBlocks {
             .strength(0.0f)
             .sound(net.minecraft.world.level.block.SoundType.GRASS)));
 
+    // VS2 Integration blocks (always registered, but only functional when VS2 is loaded)
+    public static final RegistryObject<Block> SHIP_READER = registerBlock("ship_reader",
+        () -> new ShipReaderBlock(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.COLOR_BLUE)
+            .strength(2.0f, 6.0f)
+            .requiresCorrectToolForDrops()
+            .noOcclusion()));
+
+    public static final RegistryObject<Block> SHIP_CONTROLLER = registerBlock("ship_controller",
+        () -> new ShipControllerBlock(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.GOLD)
+            .strength(2.0f, 6.0f)
+            .requiresCorrectToolForDrops()
+            .noOcclusion()));
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> registeredBlock = BLOCKS.register(name, block);
         registerBlockItem(name, registeredBlock);

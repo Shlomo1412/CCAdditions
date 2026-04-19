@@ -138,6 +138,14 @@ repositories {
             includeGroup("cc.tweaked")
         }
     }
+    // Valkyrien Skies maven repository (for future use when VS2 dependency is enabled)
+    // maven {
+    //     url "https://maven.valkyrienskies.org"
+    //     content {
+    //         includeGroup("org.valkyrienskies")
+    //         includeGroup("org.valkyrienskies.core")
+    //     }
+    // }
 }
 
 dependencies {
@@ -153,6 +161,10 @@ dependencies {
     compileOnly(fg.deobf("cc.tweaked:cc-tweaked-${minecraft_version}-forge-api:${cct_version}"))
     // Full mod needed for accessing internal classes (computer menus, etc.)
     implementation(fg.deobf("cc.tweaked:cc-tweaked-${minecraft_version}-forge:${cct_version}"))
+
+    // Valkyrien Skies 2 - optional compile-only dependency
+    // Uncomment when VS2 maven is accessible:
+    // compileOnly(fg.deobf("org.valkyrienskies:valkyrienskies-120-forge:${vs2_version}"))
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
