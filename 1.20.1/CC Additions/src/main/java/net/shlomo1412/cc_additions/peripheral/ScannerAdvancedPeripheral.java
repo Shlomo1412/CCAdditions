@@ -14,6 +14,8 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.shlomo1412.cc_additions.block.entity.ScannerAdvancedBlockEntity;
+import net.shlomo1412.cc_additions.integration.VS2Integration;
+import net.shlomo1412.cc_additions.integration.VS2Helper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -311,6 +313,29 @@ public class ScannerAdvancedPeripheral implements IPeripheral {
         }
 
         return results;
+    }
+
+    // ==================== Ship Scanning (VS2) ====================
+
+    /**
+     * Scan for all Valkyrien Skies 2 ships in the current world.
+     * Returns an empty list if VS2 is not installed.
+     *
+     * @return A list of maps containing ship data (id, name, position, rotation, velocity, etc.)
+     * @throws LuaException If the scanner is not in a valid world
+     */
+    @LuaFunction(mainThread = true)
+    public final List<Map<String, Object>> scanForShips() throws LuaException {
+        Level level = scanner.getLevel();
+        if (level == null) {
+            throw new LuaException("Scanner is not in a valid world");
+        }
+
+        if (!VS2Integration.isLoaded()) {
+            return new ArrayList<>();
+        }
+
+        return VS2Helper.getAllShips(level);
     }
 
     // ==================== Helper Methods ====================

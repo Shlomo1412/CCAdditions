@@ -6,7 +6,9 @@ import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -333,6 +335,143 @@ public class VS2Helper {
             return (Boolean) isStatic;
         }
         return false;
+    }
+
+    // ==================== SHIP SCANNING ====================
+
+    /**
+     * Get all ships in the level as a list of data maps.
+     * Uses VS2's ship world API via reflection.
+     */
+    public static List<Map<String, Object>> getAllShips(Level level) {
+        initialize();
+        List<Map<String, Object>> ships = new ArrayList<>();
+        if (!vs2Available) return ships;
+
+        try {
+            // VSGameUtilsKt.getShipObjectWorld(level) -> ShipObjectWorld
+            Method getShipObjectWorld = vsGameUtilsClass.getMethod("getShipObjectWorld", Level.class);
+            Object shipWorld = getShipObjectWorld.invoke(null, level);
+            if (shipWorld == null) return ships;
+
+            // ShipObjectWorld extends QueryableShipData or has getAllShips/getLoadedShips
+            // Try getAllShips() first, then getLoadedShips()
+            Method getAllShipsMethod = null;
+            for (Method m : shipWorld.getClass().getMethods()) {
+                if (m.getName().equals("getAllShips") && m.getParameterCount() == 0) {
+                    getAllShipsMethod = m;
+                    break;
+                }
+                if (m.getName().equals("getLoadedShips") && m.getParameterCount() == 0) {
+                    getAllShipsMethod = m;
+                }
+            }
+            if (getAllShipsMethod == null) return ships;
+
+            Object shipsIterable = getAllShipsMethod.invoke(shipWorld);
+            if (!(shipsIterable instanceof Iterable<?>)) return ships;
+
+            for (Object ship : (Iterable<?>) shipsIterable) {
+                Map<String, Object> shipData = buildShipDataFromObject(ship);
+                if (shipData != null) {
+                    ships.add(shipData);
+                }
+            }
+        } catch (Exception e) {
+            // Reflection failed, return what we have
+        }
+
+        return ships;
+    }
+
+    /**
+     * Build a ship data map from a Ship object using reflection.
+     */
+    @Nullable
+    private static Map<String, Object> buildShipDataFromObject(Object ship) {
+        try {
+            Map<String, Object> data = new HashMap<>();
+            data.put("id", getShipIdMethod.invoke(ship));
+            data.put("name", getShipSlugMethod.invoke(ship));
+
+            // Transform -> position
+            Object transform = getShipTransformMethod.invoke(ship);
+            if (transform != null) {
+                Method getPositionInWorld = transform.getClass().getMethod("getPositionInWorld");
+                Object worldPos = getPositionInWorld.invoke(transform);
+                if (worldPos != null) {
+                    Method xM = worldPos.getClass().getMethod("x");
+                    Method yM = worldPos.getClass().getMethod("y");
+                    Method zM = worldPos.getClass().getMethod("z");
+                    Map<String, Double> position = new HashMap<>();
+                    position.put("x", (Double) xM.invoke(worldPos));
+                    position.put("y", (Double) yM.invoke(worldPos));
+                    position.put("z", (Double) zM.invoke(worldPos));
+                    data.put("position", position);
+                }
+
+                Method getShipToWorldRotation = transform.getClass().getMethod("getShipToWorldRotation");
+                Object rotation = getShipToWorldRotation.invoke(transform);
+                if (rotation != null) {
+                    Method wM = rotation.getClass().getMethod("w");
+                    Method xM = rotation.getClass().getMethod("x");
+                    Method yM = rotation.getClass().getMethod("y");
+                    Method zM = rotation.getClass().getMethod("z");
+                    Map<String, Double> quat = new HashMap<>();
+                    quat.put("w", (Double) wM.invoke(rotation));
+                    quat.put("x", (Double) xM.invoke(rotation));
+                    quat.put("y", (Double) yM.invoke(rotation));
+                    quat.put("z", (Double) zM.invoke(rotation));
+                    data.put("rotation", quat);
+
+                    double qw = (Double) wM.invoke(rotation);
+                    double qx = (Double) xM.invoke(rotation);
+                    double qy = (Double) yM.invoke(rotation);
+                    double qz = (Double) zM.invoke(rotation);
+                    data.put("rotationEuler", quaternionToEuler(qw, qx, qy, qz));
+                }
+            }
+
+            // Velocity
+            Object vel = getVelocityMethod.invoke(ship);
+            if (vel != null) {
+                Method xM = vel.getClass().getMethod("x");
+                Method yM = vel.getClass().getMethod("y");
+                Method zM = vel.getClass().getMethod("z");
+                Map<String, Double> velocity = new HashMap<>();
+                velocity.put("x", (Double) xM.invoke(vel));
+                velocity.put("y", (Double) yM.invoke(vel));
+                velocity.put("z", (Double) zM.invoke(vel));
+                data.put("velocity", velocity);
+            }
+
+            // Angular velocity
+            Object omega = getOmegaMethod.invoke(ship);
+            if (omega != null) {
+                Method xM = omega.getClass().getMethod("x");
+                Method yM = omega.getClass().getMethod("y");
+                Method zM = omega.getClass().getMethod("z");
+                Map<String, Double> angVel = new HashMap<>();
+                angVel.put("x", (Double) xM.invoke(omega));
+                angVel.put("y", (Double) yM.invoke(omega));
+                angVel.put("z", (Double) zM.invoke(omega));
+                data.put("angularVelocity", angVel);
+            }
+
+            // Mass
+            Object inertiaData = getInertiaDataMethod.invoke(ship);
+            if (inertiaData != null) {
+                Method getMass = inertiaData.getClass().getMethod("getMass");
+                data.put("mass", getMass.invoke(inertiaData));
+            }
+
+            // Is static
+            data.put("isStatic", isStaticMethod.invoke(ship));
+
+            return data;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     // ==================== CONTROL METHODS ====================
